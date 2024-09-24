@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,6 +58,7 @@ class _GalleryHomeState extends State<GalleryHome> {
   }
 
   List<Album> albums = [];
+
   loadAllAlbums() async {
     albums = await PhotoGallery.listAlbums();
     albums.forEach(
@@ -87,8 +89,12 @@ class _GalleryHomeState extends State<GalleryHome> {
         itemBuilder: (BuildContext context, int index) {
           Album album = albums[index];
           return Container(
-            child: Text(
-              album.name.toString(),
+            child: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: AlbumThumbnailProvider(
+                album: album,
+                highQuality: true,
+              ),
             ),
           );
         },
